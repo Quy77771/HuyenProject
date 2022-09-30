@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+// cai nay tu may anh
 namespace QL_SV
 {
     public partial class Form1 : Form
