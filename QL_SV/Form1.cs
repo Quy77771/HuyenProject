@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿
 
 namespace QL_SV
 {
@@ -22,6 +14,7 @@ namespace QL_SV
         int index;
         public DataTable createTable()
         {
+            // aa
             DataTable dt = new DataTable();
             dt.Columns.Add("MASV");
             dt.Columns.Add("TENSV");
