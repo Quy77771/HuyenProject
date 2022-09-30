@@ -1,0 +1,11 @@
+C:\Users\pc\source\repos\HDW\HDW\QL_SV\QL_SV\bin\Debug\QL_SV.exe.config
+C:\Users\pc\source\repos\HDW\HDW\QL_SV\QL_SV\bin\Debug\QL_SV.exe
+C:\Users\pc\source\repos\HDW\HDW\QL_SV\QL_SV\bin\Debug\QL_SV.pdb
+C:\Users\pc\source\repos\HDW\HDW\QL_SV\QL_SV\obj\Debug\QL_SV.csproj.AssemblyReference.cache
+C:\Users\pc\source\repos\HDW\HDW\QL_SV\QL_SV\obj\Debug\QL_SV.csproj.SuggestedBindingRedirects.cache
+C:\Users\pc\source\repos\HDW\HDW\QL_SV\QL_SV\obj\Debug\QL_SV.Form1.resources
+C:\Users\pc\source\repos\HDW\HDW\QL_SV\QL_SV\obj\Debug\QL_SV.Properties.Resources.resources
+C:\Users\pc\source\repos\HDW\HDW\QL_SV\QL_SV\obj\Debug\QL_SV.csproj.GenerateResource.cache
+C:\Users\pc\source\repos\HDW\HDW\QL_SV\QL_SV\obj\Debug\QL_SV.csproj.CoreCompileInputs.cache
+C:\Users\pc\source\repos\HDW\HDW\QL_SV\QL_SV\obj\Debug\QL_SV.exe
+C:\Users\pc\source\repos\HDW\HDW\QL_SV\QL_SV\obj\Debug\QL_SV.pdb
