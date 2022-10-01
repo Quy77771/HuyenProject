@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -13,160 +14,86 @@ namespace QL_SV
 {
     public partial class Form1 : Form
     {
-        string flag; 
+        private bool connectedDatabase = false;
+        private SqlConnection sqlConnection;
         public Form1()
         {
             InitializeComponent();
+            this.FormClosing += (x, y) => DisconnectDatabase();
         }
 
-        DataTable dtSV;
-        int index;
-        public DataTable createTable()
+        private void LoadForm(object sender, EventArgs e)
         {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("MASV");
-            dt.Columns.Add("TENSV");
-            dt.Columns.Add("LOP");
-            dt.Columns.Add("DIEM");
-            return dt;
-        }
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            LOCKCONTROL();
-            dtSV = createTable();
-        }
-        public void LOCKCONTROL()
-        {
-            btnTHEM.Enabled = true;
-            btnSUA.Enabled = true;
-            btnXOA.Enabled = true;
-            btnLUU.Enabled = false;
-            btnHUY.Enabled = false;
-
-            textMASV.ReadOnly = true;
-            textTENSV.ReadOnly = true;
-            textDIEM.ReadOnly = true;
-            textLOP.ReadOnly = true;
-
-            btnTHEM.Focus();
-        }
-        public void UNLOCKCONTROL()
-        {
-            btnTHEM.Enabled = false;
-            btnSUA.Enabled = false;
-            btnXOA.Enabled = false;
-            btnLUU.Enabled = true;
-            btnHUY.Enabled = true;
-
-            textMASV.ReadOnly = false;
-            textTENSV.ReadOnly = false;
-            textDIEM.ReadOnly = false;
-            textLOP.ReadOnly = false;
-
-            textMASV.Focus();
+            RefreshGridSV();
         }
 
-        private void label3_Click(object sender, EventArgs e)
+        private void ConnectDatabase()
         {
+            if (connectedDatabase)
+                return;
 
+            String str = $"Server={Const.SEVER_NAME};Database={Const.DATABASE_NAME};Integrated Security=true";
+            sqlConnection = new SqlConnection(str);
+            sqlConnection.Open();
+            connectedDatabase = true;
+        }
+
+        private void DisconnectDatabase()
+        {
+            if (!connectedDatabase)
+                return;
+
+            sqlConnection.Close();
+            connectedDatabase = false;
+        }
+        private DataTable GetDataFromDatabase()
+        {
+            ConnectDatabase();
+
+            string query = "SELECT * FROM StudentInfo";
+            DataTable dataTable = new DataTable();
+
+            using (SqlCommand cmd = new SqlCommand(query, sqlConnection))
+            {
+                using (SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd))
+                    dataAdapter.Fill(dataTable);
+            }
+
+            return dataTable;
+        }
+
+        private void ClearAllInfoStudentTextBox()
+        {
+            textMASV.Text = string.Empty;
+            textTENSV.Text = string.Empty;
+            textLOP.Text = string.Empty;
+            textDIEM.Text = string.Empty;
+        }
+
+        private void RefreshGridSV()
+        {
+            dataGridSV.DataSource = GetDataFromDatabase();
         }
 
         private void btnTHEM_Click(object sender, EventArgs e)
         {
-            UNLOCKCONTROL();
-            flag = "ADD";
-
-            textMASV.Text = "";
-            textTENSV.Text = "";
-            textLOP.Text = "";
-            textDIEM.Text = "";
-        }
-
-        private void btnSUA_Click(object sender, EventArgs e)
-        {
-            UNLOCKCONTROL();
-            flag = "EDIT";
-        }
-
-        private void btnLUU_Click(object sender, EventArgs e)
-        {
-            if(flag == "ADD")
+            if (string.IsNullOrEmpty(textMASV.Text))
             {
-                if (CHECKDATA())
-                {
-                    dtSV.Rows.Add(textMASV.Text, textTENSV.Text, textLOP.Text, textDIEM.Text);
-                    dataGridSV.DataSource = dtSV;
-                    dataGridSV.RefreshEdit();
-                }
-                
+                MessageBox.Show("Student ID mustn't be left blank", "Save fail", MessageBoxButtons.OK);
+                return;
             }
-            else if ( flag == "EDIT")
-            {
-                if (CHECKDATA())
-                {
-                    dtSV.Rows[index][0] = textMASV.Text;
-                    dtSV.Rows[index][1] = textTENSV.Text;
-                    dtSV.Rows[index][2] = textLOP.Text;
-                    dtSV.Rows[index][3] = textDIEM.Text;
-                    dataGridSV.DataSource = dtSV;
-                    dataGridSV.RefreshEdit();
-                }
-            }
-            LOCKCONTROL();
-        }
+            ConnectDatabase();
 
-        public bool CHECKDATA()
-        {
-            if (string.IsNullOrWhiteSpace(textMASV.Text))
-            {
-                MessageBox.Show("NHẬP MÃ SINH VIÊN", "THONG BÁO", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                textMASV.Focus();
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(textTENSV.Text))
-            {
-                MessageBox.Show("NHẬP TÊN", "THONG BÁO", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                textTENSV.Focus();
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(textLOP.Text))
-            {
-                MessageBox.Show("NHẬP LỚP", "THONG BÁO", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                textLOP.Focus();
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(textDIEM.Text))
-            {
-                MessageBox.Show("NHẬP ĐIỂM", "THONG BÁO", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                textDIEM.Focus();
-                return false;
-            }
-            return true;
-        }
+            string query = $"INSERT INTO {Const.TABLE_ACCESS} ({Const.COL_MASV}, {Const.COL_TENSV}, {Const.COL_LOP}, {Const.COL_DIEM})" +
+                                                    $"VALUES ('{textMASV.Text}', '{textTENSV.Text}', '{textLOP.Text}', {textDIEM.Text})";
 
-        private void dataGridSV_SelectionChanged(object sender, EventArgs e)
-        {
-            index = dataGridSV.CurrentCell.RowIndex;
-            DataTable dt = (DataTable)dataGridSV.DataSource;
-            if( dt.Rows != null || dt.Rows.Count > 0)
+            using(SqlCommand cmd = new SqlCommand(query, sqlConnection))
             {
-                textMASV.Text = dataGridSV.Rows[index].Cells[0].Value.ToString();
-                textTENSV.Text = dataGridSV.Rows[index].Cells[1].Value.ToString();
-                textLOP.Text = dataGridSV.Rows[index].Cells[2].Value.ToString();
-                textDIEM.Text = dataGridSV.Rows[index].Cells[3].Value.ToString();
-
+                cmd.ExecuteNonQuery();
             }
 
-        }
-
-        private void btnXOA_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("a diu sua","cảnh báo",MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-            {
-                dtSV.Rows.RemoveAt(index);
-                dataGridSV.DataSource = dtSV;
-                dataGridSV.RefreshEdit();
-            }
+            ClearAllInfoStudentTextBox();
+            RefreshGridSV();
         }
     }
 }

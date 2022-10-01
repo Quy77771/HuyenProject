@@ -9,3 +9,13 @@ C:\Users\pc\source\repos\HDW\HDW\QL_SV\QL_SV\obj\Debug\QL_SV.csproj.GenerateReso
 C:\Users\pc\source\repos\HDW\HDW\QL_SV\QL_SV\obj\Debug\QL_SV.csproj.CoreCompileInputs.cache
 C:\Users\pc\source\repos\HDW\HDW\QL_SV\QL_SV\obj\Debug\QL_SV.exe
 C:\Users\pc\source\repos\HDW\HDW\QL_SV\QL_SV\obj\Debug\QL_SV.pdb
+D:\New folder\QL_SV\bin\Debug\QL_SV.exe.config
+D:\New folder\QL_SV\bin\Debug\QL_SV.exe
+D:\New folder\QL_SV\bin\Debug\QL_SV.pdb
+D:\New folder\QL_SV\obj\Debug\QL_SV.csprojAssemblyReference.cache
+D:\New folder\QL_SV\obj\Debug\QL_SV.Form1.resources
+D:\New folder\QL_SV\obj\Debug\QL_SV.Properties.Resources.resources
+D:\New folder\QL_SV\obj\Debug\QL_SV.csproj.GenerateResource.cache
+D:\New folder\QL_SV\obj\Debug\QL_SV.csproj.CoreCompileInputs.cache
+D:\New folder\QL_SV\obj\Debug\QL_SV.exe
+D:\New folder\QL_SV\obj\Debug\QL_SV.pdb
